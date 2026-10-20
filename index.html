@@ -195,4 +195,378 @@ function renderQuiz(){const q=questions[qi];document.getElementById('quizProgres
 document.getElementById('nextQuestion').addEventListener('click',()=>{if(!checked){if(chosen===null)return;checked=true;if(chosen===questions[qi].correct)score++;renderQuiz();return}if(qi<questions.length-1){qi++;chosen=null;checked=false;renderQuiz()}else{document.getElementById('questionText').textContent=`You scored ${score} out of ${questions.length}.`;document.getElementById('answers').innerHTML='<p class="subtext">Review any explanations above by restarting the quiz and trying again. Learning grows with practice.</p>';document.getElementById('quizProgress').textContent='QUIZ COMPLETE';document.getElementById('feedback').textContent=score===questions.length?'Excellent work — all answers correct!':'Well done for giving it a try. Keep practising!';document.getElementById('scoreLine').textContent='This is a short sample quiz, not an official assessment.';document.getElementById('nextQuestion').disabled=true;document.getElementById('nextQuestion').textContent='Finished ✓'}});document.getElementById('restartQuiz').addEventListener('click',()=>{qi=0;chosen=null;checked=false;score=0;renderQuiz()});
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window._toastTimer);window._toastTimer=setTimeout(()=>t.classList.remove('show'),2200)}
 const menuBtn=document.getElementById('menuBtn'),navlinks=document.getElementById('navlinks');menuBtn.addEventListener('click',()=>{const open=navlinks.classList.toggle('open');menuBtn.setAttribute('aria-expanded',String(open));menuBtn.textContent=open?'✕':'☰'});navlinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{navlinks.classList.remove('open');menuBtn.setAttribute('aria-expanded','false');menuBtn.textContent='☰'}));document.getElementById('year').textContent=new Date().getFullYear();renderSubjects();renderQuiz();
-</script></body></html>
+</script>
+<!-- LEARNORA LEARNING HUB: STARTER MODULE -->
+<style>
+  #learnora-app {
+    --lh-primary: #3156c8;
+    --lh-ink: #18233c;
+    --lh-muted: #64748b;
+    --lh-line: #e2e8f0;
+    color: var(--lh-ink);
+    font-family: inherit;
+    max-width: 1180px;
+    margin: 30px auto;
+    padding: 20px;
+  }
+  #learnora-app * { box-sizing: border-box; }
+  #learnora-app .lh-hero {
+    padding: 28px;
+    border-radius: 20px;
+    background: linear-gradient(130deg,#eef2ff,#f0fdfa);
+    margin-bottom: 24px;
+  }
+  #learnora-app h2, #learnora-app h3, #learnora-app h4 {
+    margin-top: 0;
+    color: var(--lh-ink);
+  }
+  #learnora-app .lh-hero h2 { font-size: clamp(25px,4vw,38px); }
+  #learnora-app .lh-muted { color: var(--lh-muted); }
+  #learnora-app .lh-search {
+    display: block; width: 100%; padding: 13px 15px;
+    border: 1px solid var(--lh-line); border-radius: 12px;
+    background: white; font: inherit; margin: 18px 0;
+  }
+  #learnora-app .lh-grid {
+    display: grid; grid-template-columns: repeat(4,minmax(0,1fr));
+    gap: 12px; margin: 16px 0 26px;
+  }
+  #learnora-app .lh-card {
+    text-align: left; padding: 18px; border: 1px solid var(--lh-line);
+    border-radius: 14px; background: white; color: var(--lh-ink);
+    cursor: pointer; font: inherit; transition: border-color .15s, transform .15s;
+  }
+  #learnora-app .lh-card:hover {
+    border-color: var(--lh-primary); transform: translateY(-2px);
+  }
+  #learnora-app .lh-card strong { display: block; margin-bottom: 7px; }
+  #learnora-app .lh-card small { color: var(--lh-muted); line-height: 1.5; }
+  #learnora-app .lh-button {
+    display: inline-block; border: 0; border-radius: 10px;
+    background: var(--lh-primary); color: white; padding: 11px 15px;
+    cursor: pointer; font: inherit; font-weight: 600; margin: 4px 5px 4px 0;
+  }
+  #learnora-app .lh-button.secondary {
+    color: var(--lh-primary); background: #eef2ff;
+  }
+  #learnora-app .lh-crumbs { margin-bottom: 18px; }
+  #learnora-app .lh-crumbs button {
+    border: 0; background: transparent; color: var(--lh-primary);
+    cursor: pointer; font: inherit; text-decoration: underline;
+  }
+  #learnora-app .lh-panel {
+    background: white; border: 1px solid var(--lh-line);
+    border-radius: 16px; padding: 22px; margin: 16px 0;
+  }
+  #learnora-app .lh-panel p, #learnora-app .lh-panel li {
+    line-height: 1.75;
+  }
+  #learnora-app .lh-tag {
+    display: inline-block; background: #eef2ff; color: #3149a5;
+    border-radius: 99px; padding: 5px 10px; font-size: 13px;
+    margin: 0 5px 8px 0;
+  }
+  #learnora-app .lh-reveal {
+    background: #f8fafc; border-left: 4px solid #93a7ee;
+    padding: 12px 15px; margin-top: 10px; border-radius: 6px;
+  }
+  #learnora-app [hidden] { display: none !important; }
+  #learnora-app .lh-empty { padding: 22px; color: var(--lh-muted); }
+  @media(max-width:800px) {
+    #learnora-app .lh-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  }
+  @media(max-width:480px) {
+    #learnora-app { padding: 12px; }
+    #learnora-app .lh-hero { padding: 20px; }
+    #learnora-app .lh-grid { gap: 8px; }
+    #learnora-app .lh-card { padding: 13px; }
+    #learnora-app .lh-panel { padding: 16px; }
+  }
+</style>
+
+<section id="learnora-app">
+  <div class="lh-hero">
+    <span class="lh-tag">CBSE / NCERT learning pathway</span>
+    <h2>Learn step by step with Learnora</h2>
+    <p class="lh-muted">
+      Choose your class, explore subjects, study a lesson, and practise
+      at your own pace.
+    </p>
+    <label for="lh-search"><strong>Find a class, subject, or chapter</strong></label>
+    <input id="lh-search" class="lh-search" type="search"
+      placeholder="Try: Class 6, Maths, Fractions..." autocomplete="off">
+    <p class="lh-muted" style="font-size:13px">
+      Starter version: some chapter entries are placeholders and must be
+      checked against the current NCERT textbook for your class.
+    </p>
+  </div>
+
+  <nav id="lh-crumbs" class="lh-crumbs" aria-label="Learning navigation"></nav>
+  <div id="lh-content" aria-live="polite"></div>
+</section>
+
+<script>
+(function () {
+  const root = document.getElementById("learnora-app");
+  if (!root || root.dataset.initialized === "true") return;
+  root.dataset.initialized = "true";
+
+  const content = root.querySelector("#lh-content");
+  const crumbs = root.querySelector("#lh-crumbs");
+  const search = root.querySelector("#lh-search");
+
+  const state = { page: "classes", classNo: null, subject: null, chapter: null };
+  const classNames = Array.from({ length: 12 }, (_, i) => i + 1);
+
+  const subjectsFor = n => {
+    if (n <= 5) return ["Mathematics", "English", "Environmental Studies"];
+    if (n <= 8) return ["Mathematics", "Science", "English", "Social Science"];
+    if (n <= 10) return ["Mathematics", "Science", "English", "Social Science"];
+    return ["Mathematics", "Physics", "Chemistry", "Biology", "English"];
+  };
+
+  // These are illustrative starter entries, not a verified full syllabus.
+  const sampleChapters = {
+    "1|Mathematics": ["Numbers Around Us", "Addition and Subtraction"],
+    "2|Mathematics": ["Numbers", "Addition and Subtraction"],
+    "3|Mathematics": ["Numbers", "Shapes and Patterns"],
+    "4|Mathematics": ["Large Numbers", "Factors and Multiples"],
+    "5|Mathematics": ["Fractions", "Measurement"],
+    "6|Mathematics": ["Knowing Our Numbers", "Whole Numbers", "Fractions"],
+    "7|Mathematics": ["Integers", "Fractions and Decimals", "Simple Equations"],
+    "8|Mathematics": ["Rational Numbers", "Linear Equations", "Squares and Square Roots"],
+    "9|Mathematics": ["Number Systems", "Polynomials", "Coordinate Geometry"],
+    "10|Mathematics": ["Real Numbers", "Polynomials", "Pair of Linear Equations"],
+    "11|Mathematics": ["Sets", "Relations and Functions", "Trigonometric Functions"],
+    "12|Mathematics": ["Relations and Functions", "Matrices", "Continuity and Differentiability"],
+    "6|Science": ["The Wonderful World of Science", "Materials Around Us"],
+    "7|Science": ["Nutrition in Plants", "Heat"],
+    "8|Science": ["Crop Production", "Microorganisms"],
+    "9|Science": ["Matter in Our Surroundings", "The Fundamental Unit of Life"],
+    "10|Science": ["Chemical Reactions and Equations", "Life Processes"]
+  };
+
+  const lessonExamples = {
+    "Fractions": {
+      intro: "A fraction represents part of a whole. It is written as a/b, where b is not zero.",
+      points: ["The numerator is the top number.", "The denominator is the bottom number.", "Equivalent fractions represent the same value."],
+      example: "For 1/2 + 1/4, write 1/2 as 2/4. Then 2/4 + 1/4 = 3/4.",
+      hint: "First, express both fractions with the same denominator.",
+      solution: "1/2 = 2/4, so 2/4 + 1/4 = 3/4."
+    },
+    "Integers": {
+      intro: "Integers include negative whole numbers, zero, and positive whole numbers.",
+      points: ["Numbers to the right of zero on a number line are positive.", "Numbers to the left of zero are negative.", "Adding a negative number moves left on the number line."],
+      example: "Calculate 5 + (-8). Starting at 5 and moving 8 steps left gives -3.",
+      hint: "Compare the absolute values and keep the sign of the number with the greater absolute value.",
+      solution: "5 + (-8) = 5 - 8 = -3."
+    },
+    "Linear Equations": {
+      intro: "A linear equation uses a variable whose highest power is one.",
+      points: ["An equation has two equal sides.", "Perform the same operation on both sides.", "Check a solution by substituting it back into the equation."],
+      example: "Solve x + 4 = 9. Subtract 4 from both sides to obtain x = 5.",
+      hint: "Undo the addition by subtracting 4 from both sides.",
+      solution: "x + 4 = 9; x = 9 - 4; therefore x = 5."
+    },
+    "Number Systems": {
+      intro: "Number systems classify numbers into groups such as natural, whole, integer, rational, and irrational numbers.",
+      points: ["Rational numbers can be written as p/q with integers p and q and q not equal to zero.", "Irrational numbers cannot be expressed as a ratio of two integers.", "Every integer is rational."],
+      example: "3/4 is rational. The number √2 is irrational.",
+      hint: "Ask whether the number can be written as a ratio of integers.",
+      solution: "3/4 is already a ratio of integers. √2 cannot be expressed as such a ratio."
+    },
+    "Chemical Reactions and Equations": {
+      intro: "A chemical reaction transforms one or more substances into new substances.",
+      points: ["Reactants are the starting substances.", "Products are the substances formed.", "A balanced equation has the same number of each type of atom on both sides."],
+      example: "Hydrogen reacts with oxygen to form water: 2H₂ + O₂ → 2H₂O.",
+      hint: "Count hydrogen and oxygen atoms on each side of the equation.",
+      solution: "Both sides contain four hydrogen atoms and two oxygen atoms."
+    }
+  };
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, c => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;",
+      '"': "&quot;", "'": "&#39;"
+    }[c]));
+  }
+
+  function button(label, action, secondary) {
+    return '<button type="button" class="lh-button ' +
+      (secondary ? "secondary" : "") +
+      '" data-action="' + escapeHTML(action) + '">' +
+      escapeHTML(label) + '</button>';
+  }
+
+  function panel(title, body) {
+    return '<section class="lh-panel"><h3>' + title + '</h3>' +
+      body + '</section>';
+  }
+
+  function chaptersFor(n, subject) {
+    const exact = sampleChapters[n + "|" + subject];
+    if (exact) return exact;
+    return [
+      "Chapter 1 — add verified textbook title",
+      "Chapter 2 — add verified textbook title",
+      "Chapter 3 — add verified textbook title"
+    ];
+  }
+
+  function drawCrumbs() {
+    crumbs.innerHTML =
+      button("All classes", "classes", true) +
+      (state.classNo ? " › " + button("Class " + state.classNo, "subjects", true) : "") +
+      (state.subject ? " › " + button(state.subject, "chapters", true) : "") +
+      (state.chapter ? " › " + escapeHTML(state.chapter) : "");
+  }
+
+  function drawClasses(filter) {
+    state.page = "classes";
+    const term = (filter || "").toLowerCase();
+    const items = classNames.filter(n =>
+      ("class " + n).includes(term) || String(n) === term || !term
+    );
+
+    content.innerHTML = "<h3>Choose your class</h3>" +
+      '<p class="lh-muted">Start with your current school class.</p>' +
+      '<div class="lh-grid">' + items.map(n =>
+        '<button class="lh-card" data-action="choose-class" data-class="' + n + '">' +
+          "<strong>Class " + n + "</strong>" +
+          "<small>" + (n <= 5 ? "Primary stage" : n <= 8 ? "Middle stage" :
+            n <= 10 ? "Secondary stage" : "Senior secondary stage") + "</small>" +
+        "</button>"
+      ).join("") + "</div>" +
+      (items.length ? "" : '<p class="lh-empty">No class found. Try a number from 1 to 12.</p>');
+    drawCrumbs();
+  }
+
+  function drawSubjects(filter) {
+    state.page = "subjects";
+    const subjects = subjectsFor(state.classNo).filter(s =>
+      !filter || s.toLowerCase().includes(filter.toLowerCase())
+    );
+    content.innerHTML = "<h3>Class " + state.classNo + " subjects</h3>" +
+      '<p class="lh-muted">Choose a subject to explore its chapters.</p>' +
+      '<div class="lh-grid">' + subjects.map(s =>
+        '<button class="lh-card" data-action="choose-subject" data-subject="' +
+          escapeHTML(s) + '"><strong>' + escapeHTML(s) +
+          '</strong><small>Open chapter list</small></button>'
+      ).join("") + "</div>" +
+      (subjects.length ? "" : '<p class="lh-empty">No matching subject found.</p>');
+    drawCrumbs();
+  }
+
+  function drawChapters(filter) {
+    state.page = "chapters";
+    const chapters = chaptersFor(state.classNo, state.subject).filter(c =>
+      !filter || c.toLowerCase().includes(filter.toLowerCase())
+    );
+    content.innerHTML = "<h3>" + escapeHTML(state.subject) +
+      " — Class " + state.classNo + "</h3>" +
+      '<p class="lh-muted">Choose a chapter to open its lesson page.</p>' +
+      '<div class="lh-grid">' + chapters.map((c, i) =>
+        '<button class="lh-card" data-action="choose-chapter" data-chapter="' +
+          escapeHTML(c) + '"><strong>Chapter ' + (i + 1) + '</strong><small>' +
+          escapeHTML(c) + '</small></button>'
+      ).join("") + "</div>" +
+      '<p class="lh-muted">Please verify chapter titles against the current textbook before publishing them as official syllabus content.</p>' +
+      (chapters.length ? "" : '<p class="lh-empty">No matching chapter found.</p>');
+    drawCrumbs();
+  }
+
+  function drawLesson() {
+    state.page = "lesson";
+    const data = lessonExamples[state.chapter] || {
+      intro: "This lesson page is ready for the verified theory for " + state.chapter + ". Add explanations from the relevant curriculum and your own teaching material here.",
+      points: ["Add the key ideas for this chapter.", "Add important definitions, rules, or formulas.", "Include a worked example with clear steps."],
+      example: "Add a worked example relevant to Class " + state.classNo + " " + state.subject + ".",
+      hint: "Add a clue that helps the learner take the next step without giving away the full answer.",
+      solution: "Add a checked, step-by-step solution after verifying the question and answer."
+    };
+
+    content.innerHTML =
+      '<span class="lh-tag">Class ' + state.classNo + '</span>' +
+      '<span class="lh-tag">' + escapeHTML(state.subject) + '</span>' +
+      panel(escapeHTML(state.chapter), "<p>" + escapeHTML(data.intro) + "</p>") +
+      panel("Key points", "<ul>" + data.points.map(p =>
+        "<li>" + escapeHTML(p) + "</li>").join("") + "</ul>") +
+      panel("Worked example", "<p>" + escapeHTML(data.example) + "</p>") +
+      '<h3>Practice your understanding</h3>' +
+      '<p class="lh-muted">Use the difficulty levels to organise future exercises.</p>' +
+      '<div class="lh-grid">' +
+        ["Easy", "Tough", "Toughest", "Final Challenge"].map((level, i) =>
+          '<article class="lh-card"><strong>' + level + '</strong><small>' +
+          ["Build the basics", "Apply the idea", "Connect multiple steps", "Try a full challenge"][i] +
+          '</small><p>' + escapeHTML(
+            i === 0 ? "Define or explain one key idea from this lesson." :
+            i === 1 ? "Solve a new problem using the lesson method." :
+            i === 2 ? "Solve a problem that combines two ideas." :
+            "Complete a longer problem and explain your reasoning."
+          ) + '</p>' +
+          button("Show hint", "hint-" + i, true) +
+          button("Show solution", "solution-" + i, true) +
+          '<div class="lh-reveal" data-reveal="hint-' + i + '" hidden>' +
+          escapeHTML(data.hint) + '</div>' +
+          '<div class="lh-reveal" data-reveal="solution-' + i + '" hidden>' +
+          escapeHTML(data.solution) + '</div></article>'
+        ).join("") + "</div>" +
+      panel("Learning note",
+        "<p>This is the starter lesson layout. Before students rely on it, add and review the real chapter theory, original practice questions, hints, and worked solutions.</p>") +
+      button("Back to chapters", "chapters", true);
+    drawCrumbs();
+  }
+
+  function render() {
+    if (state.page === "classes") drawClasses(search.value);
+    else if (state.page === "subjects") drawSubjects(search.value);
+    else if (state.page === "chapters") drawChapters(search.value);
+    else drawLesson();
+  }
+
+  root.addEventListener("click", function (event) {
+    const target = event.target.closest("[data-action]");
+    if (!target) return;
+    const action = target.dataset.action;
+
+    if (action === "classes") {
+      state.classNo = null; state.subject = null; state.chapter = null;
+      search.value = ""; drawClasses("");
+    } else if (action === "subjects") {
+      state.subject = null; state.chapter = null; search.value = "";
+      drawSubjects("");
+    } else if (action === "chapters") {
+      state.chapter = null; search.value = ""; drawChapters("");
+    } else if (action === "choose-class") {
+      state.classNo = Number(target.dataset.class);
+      state.subject = null; state.chapter = null; search.value = "";
+      drawSubjects("");
+    } else if (action === "choose-subject") {
+      state.subject = target.dataset.subject;
+      state.chapter = null; search.value = ""; drawChapters("");
+    } else if (action === "choose-chapter") {
+      state.chapter = target.dataset.chapter;
+      search.value = ""; drawLesson();
+    } else if (action.startsWith("hint-") || action.startsWith("solution-")) {
+      const reveal = root.querySelector('[data-reveal="' + action + '"]');
+      if (reveal) reveal.hidden = !reveal.hidden;
+      target.textContent = reveal && reveal.hidden
+        ? (action.startsWith("hint-") ? "Show hint" : "Show solution")
+        : (action.startsWith("hint-") ? "Hide hint" : "Hide solution");
+    }
+  });
+
+  search.addEventListener("input", function () {
+    if (state.page === "lesson") {
+      state.chapter = null;
+      state.page = "chapters";
+    }
+    render();
+  });
+
+  drawClasses("");
+})();
+</script>
+<!-- LEARNORA LEARNING HUB: END STARTER MODULE -->
+</body>
+</body></html>
